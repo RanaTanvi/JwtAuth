@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +15,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('login',[LoginController::class,'login'])->name('login');
+Route::get('refreshtoken',[LoginController::class,'refreshToken']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware'=>['admin','auth'],'prefix' => 'user'], function () {
+    Route::get('', [UserController::class,'index']);
+    Route::post('', [UserController::class,'store']);
+    Route::post('{id}', [UserController::class,'update']);
+    Route::delete('{id}', [UserController::class,'delete']);
+    Route::get('fetch',[LoginController::class,'getUser']);
 });
