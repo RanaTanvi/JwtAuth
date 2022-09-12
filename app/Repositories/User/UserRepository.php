@@ -31,7 +31,7 @@ class UserRepository implements UserRepositoryInterface
     public function updateUser(int $id, array $data)
     {
         $userDetails = [
-            'username' => $data['name'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
             'role_id' => $data['role_id'],
         ];
